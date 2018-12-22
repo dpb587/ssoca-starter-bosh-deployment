@@ -62,6 +62,9 @@
     options:
       ca: openvpn_ca
       common_name: openvpn
+      key_usage:
+      - digital_signature
+      - key_encipherment
       extended_key_usage:
       - server_auth
     type: certificate
