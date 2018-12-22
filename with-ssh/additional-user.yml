@@ -1,0 +1,6 @@
+- path: /instance_groups/name=ssoca/jobs/name=user_add/properties/users/-
+  type: replace
+  value:
+    name: ((ssh_additional_username))
+    public_key: invalid
+    shell: /bin/bash

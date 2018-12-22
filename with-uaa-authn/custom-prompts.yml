@@ -1,0 +1,3 @@
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/auth/options/prompts?
+  type: replace
+  value: ((ssoca_authn_uaa_prompts))

@@ -1,0 +1,67 @@
+- path: /releases/name=openvpn?
+  type: replace
+  value:
+    name: openvpn
+    sha1: b42eb85e5f074c26b065956cc9b8a6d69208f8a0
+    url: https://s3-external-1.amazonaws.com/dpb587-bosh-release-openvpn-us-east-1/artifacts/release/b42eb85e5f074c26b065956cc9b8a6d69208f8a0
+    version: 5.1.0
+- path: /instance_groups/name=ssoca/jobs/-
+  type: replace
+  value:
+    name: openvpn
+    properties:
+      dh_pem: |
+        -----BEGIN DH PARAMETERS-----
+        MIIBCAKCAQEAnh81kmxgN4tbaCpnMCSKD12oYlC2V1LPObLl07ShR03iu8eq87Wh
+        ZPf3T8NX0NZ6N56xAnvF3mOQoRrlHWSFL/UjQIrNREy5Fq60phQ2bNWUzTOtpzfr
+        exthCqYe9hxLOwS6pt7TSDyxhmseraIDXuANW3FWzr1TtIoG2jxUVUKJNBisGePa
+        r+ok7rJ3R1ajgxcEu0NHquq5ZlfgBGbMBSnjZvGSWiZR77MkznplZVD7TLmY0D5S
+        93f50Y+eHax9Kg/mxft6WW8NCpwRELwcaYg1nsjFKfSoLUnjQN+YQmg5tHwUYKpm
+        +SfVKWueaKMidKywS6D39UBU21x5z+lFiwIBAg==
+        -----END DH PARAMETERS-----
+      extra_configs:
+      - tcp-nodelay
+      - script-security 2
+      - tls-verify "/var/vcap/packages/ssoca-openvpn-verify/bin/tls-verify 2m"
+      - tls-export-cert /var/vcap/data/ssoca-openvpn-verify/certs
+      server: ((openvpn_vpn_network)) ((openvpn_vpn_network_mask))
+      tls_server: ((openvpn_server_tls))
+    release: openvpn
+- path: /instance_groups/name=ssoca/jobs/-
+  type: replace
+  value:
+    name: ssoca-openvpn-verify
+    release: ssoca
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/consumes?/openvpn/network
+  type: replace
+  value: vip
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/openvpn_service_link?/require
+  type: replace
+  value: ((ssoca_openvpn_authz))
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/openvpn_service_link/options?/certauth
+  type: replace
+  value: openvpn
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/certauths?/-
+  type: replace
+  value:
+    name: openvpn
+    type: memory
+    options: ((openvpn_ca))
+- path: /variables/-
+  type: replace
+  value:
+    name: openvpn_ca
+    options:
+      common_name: openvpn
+      is_ca: true
+    type: certificate
+- path: /variables/-
+  type: replace
+  value:
+    name: openvpn_server_tls
+    options:
+      ca: openvpn_ca
+      common_name: openvpn
+      extended_key_usage:
+      - server_auth
+    type: certificate

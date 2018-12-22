@@ -1,0 +1,3 @@
+- path: /instance_groups/name=ssoca/jobs/name=openvpn/properties/dh_pem
+  type: replace
+  value: ((openvpn_dh_pem))

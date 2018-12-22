@@ -1,0 +1,3 @@
+- path: /instance_groups/name=ssoca/jobs/name=openvpn/properties/extra_configs/-
+  type: replace
+  value: duplicate-cn

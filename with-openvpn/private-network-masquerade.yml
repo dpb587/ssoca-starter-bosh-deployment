@@ -1,0 +1,20 @@
+- path: /releases/-
+  type: replace
+  value:
+    name: networking
+    sha1: 9b5f9d27917c3754e492470ac6c9af80d62963db
+    url: http://bosh.io/d/github.com/cloudfoundry/networking-release?v=9
+    version: 9
+- path: /instance_groups/name=ssoca/jobs/-
+  type: replace
+  value:
+    name: iptables
+    properties:
+      iptables:
+        nat:
+          POSTROUTING:
+          - -s ((openvpn_vpn_network))/((openvpn_vpn_network_mask_bits)) -d ((openvpn_private_network))/((openvpn_private_network_mask_bits)) -j MASQUERADE -m comment --comment 'vpn -> lan'
+    release: networking
+- path: /instance_groups/name=ssoca/jobs/name=openvpn/properties/push_routes?/-
+  type: replace
+  value: ((openvpn_vpn_network)) ((openvpn_private_network_mask))

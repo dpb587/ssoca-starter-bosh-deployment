@@ -1,0 +1,14 @@
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/auth?
+  type: replace
+  value:
+    type: google
+    options:
+      client_id: ((ssoca_authn_google_client_id))
+      client_secret: ((ssoca_authn_google_client_secret))
+      jwt:
+        private_key: ((ssoca_authn_jwt.private_key))
+- path: /variables/-
+  type: replace
+  value:
+    name: ssoca_jwt
+    type: rsa

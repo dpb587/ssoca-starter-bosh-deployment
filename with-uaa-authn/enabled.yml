@@ -1,0 +1,8 @@
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/auth?
+  type: replace
+  value:
+    type: uaa
+    options:
+      client_id: ((ssoca_authn_uaa_client_id))
+      public_key: ((ssoca_authn_uaa_public_key))
+      url: ((ssoca_authn_uaa_url))

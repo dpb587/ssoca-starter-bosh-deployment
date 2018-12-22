@@ -1,0 +1,3 @@
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/env/banner?
+  type: replace
+  value: ((ssoca_env_banner))

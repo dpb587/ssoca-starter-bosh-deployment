@@ -1,0 +1,62 @@
+instance_groups:
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: bpm
+    release: bpm
+  - name: ssoca
+    properties:
+      certauths: []
+      env:
+        name: ((ssoca_env_name))
+        title: ((ssoca_env_title))
+        url: http://((ssoca_public_hostname)):18705
+      server:
+        host: 127.0.0.1
+        private_key: ((ssoca_https_key_pair))
+    release: ssoca
+  name: ssoca
+  networks:
+  - default:
+    - dns
+    - gateway
+    name: public
+  - name: vip
+    static_ips:
+    - ((ssoca_public_ip))
+  stemcell: default
+  vm_type: t2_nano
+name: ssoca
+releases:
+- name: "bpm"
+  sha1: "42b95d4a0d6d15dd0b0ead62418ffb56208e2307"
+  url: "https://bosh.io/d/github.com/cloudfoundry-incubator/bpm-release?v=1.0.0"
+  version: "1.0.0"
+- name: "ssoca"
+  sha1: "sha256:77b8cfdfeac4c0ff9daa4f9e51a0d81d1918a1eb4275d4d690bc931d6c8f6866"
+  url: "https://s3-external-1.amazonaws.com/dpb587-ssoca-bosh-release-us-east-1/releases/ssoca/ssoca-0.13.0.tgz"
+  version: "0.13.0"
+stemcells:
+- alias: default
+  os: ubuntu-xenial
+  version: 170.latest
+update:
+  canaries: 1
+  canary_watch_time: 5000-300000
+  max_errors: 2
+  max_in_flight: 1
+  serial: false
+  update_watch_time: 5000-300000
+variables:
+- name: ssoca_ca
+  options:
+    common_name: ssoca
+    is_ca: true
+  type: certificate
+- name: ssoca_https_key_pair
+  options:
+    ca: ssoca_ca
+    common_name: "ssoca: ((ssoca_public_hostname))"
+    alternative_names:
+    - ((ssoca_public_hostname))

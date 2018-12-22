@@ -1,0 +1,19 @@
+- path: /releases/-
+  type: replace
+  value:
+    name: syslog
+    sha1: 332ac15609b220a3fdf5efad0e0aa069d8235788
+    url: http://bosh.io/d/github.com/cloudfoundry/syslog-release?v=11
+    version: 11
+- path: /instance_groups/name=ssoca/jobs/-
+  type: replace
+  value:
+    name: syslog_forwarder
+    properties:
+      syslog:
+        address: ((logging_papertrail_address))
+        permitted_peer: '*.papertrailapp.com'
+        port: ((logging_papertrail_port))
+        tls_enabled: true
+        transport: tcp
+    release: syslog

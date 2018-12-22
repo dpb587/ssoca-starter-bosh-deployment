@@ -1,0 +1,27 @@
+- path: /releases/-
+  type: replace
+  value:
+    name: "caddy"
+    sha1: "sha256:1ef07bc4af8982ad559fcff9e5df629247161e19fe91af9a76de4b7a98b13ebd"
+    url: "https://s3-external-1.amazonaws.com/dpb587-caddy-bosh-release-us-east-1/artifacts/release/20f1dd48ba3ab1fe43a57ed3a2882b09ce4b89a5"
+    version: "0.3.0"
+- path: /instance_groups/name=ssoca/persistent_disk?
+  type: replace
+  value: 1
+- path: /instance_groups/name=ssoca/jobs/-
+  type: replace
+  value:
+    name: caddy
+    properties:
+      acme:
+        email: ((admin_email))
+      caddyfile: |
+        ((ssoca_public_hostname)) {
+          proxy / 127.0.0.1:18705 {
+            transparent
+          }
+        }
+    release: caddy
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/env/url
+  type: replace
+  value: https://((ssoca_public_hostname))

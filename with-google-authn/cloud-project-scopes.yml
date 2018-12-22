@@ -1,0 +1,3 @@
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/auth/options/scopes?/cloud_project
+  type: replace
+  value: ((ssoca_authn_google_cloud_project))
