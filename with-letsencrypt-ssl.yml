@@ -25,3 +25,9 @@
 - path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/env/url
   type: replace
   value: https://((ssoca_public_hostname))
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/server/trusted_proxies?/-
+  type: replace
+  value: 127.0.0.1
+- path: /instance_groups/name=ssoca/jobs/name=ssoca/properties/server/trusted_proxies?/-
+  type: replace
+  value: "::1"
